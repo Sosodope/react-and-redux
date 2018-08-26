@@ -1,1 +1,1 @@
-# react-and-redux
+# First React & Redux project

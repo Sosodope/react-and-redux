@@ -5,10 +5,10 @@ import App from "./App";
 import registerServiceWorker from "./registerServiceWorker";
 // 1. import createStore
 //6. import combineReducers for passing multiple reducers as a single one
-import { combineReducers, createStore } from "redux";
+import { applyMiddleware, compose, combineReducers, createStore } from "redux";
 //13. import providers to give app access to store
 import { Provider } from "react-redux";
-
+import thunk from "redux-thunk";
 import productsReducer from "./reducers/products-reducer";
 import userReducer from "./reducers/user-reducer";
 
@@ -43,6 +43,12 @@ const allReducers = combineReducers({
   products: productsReducer,
   user: userReducer
 });
+
+const allStoreEnhancers = compose(
+  applyMiddleware(thunk),
+  window.devToolsExtension && window.devToolsExtension()
+);
+
 // 2. create the store
 //10. Set initial state by passing another param
 const store = createStore(
@@ -51,7 +57,7 @@ const store = createStore(
     products: [{ name: "iPhone" }],
     user: "Michael"
   },
-  window.devToolsExtension && window.devToolsExtension()
+  allStoreEnhancers
 );
 
 //shows state of our store
@@ -83,7 +89,7 @@ console.log(store.getState());
 //14. wrap
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <App randomProp="Sonam" />
   </Provider>,
   document.getElementById("root")
 );
